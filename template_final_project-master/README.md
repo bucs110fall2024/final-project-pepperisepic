@@ -69,7 +69,7 @@ IDEA 2:
 ^user will play as a moveable crane or seagull (still deciding)
 -Fish 
 ^fish will spawn in on screen randomly
--Score
+-score
 ^score will change as # of fish are caught and as game lasts longer
 
 
