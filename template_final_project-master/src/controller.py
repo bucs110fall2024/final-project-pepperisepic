@@ -1,3 +1,7 @@
+import rock
+import impala
+import cloud
+
 class Controller:
   
   def __init__(self):
@@ -14,7 +18,7 @@ class Controller:
            self.startloop()
            
            
-           
+           # 2 detect collisions and update models
            enemies = pygame.sprite.spritecollide(self.Impala, self.Rocks, False)
            for enemies in enemies: 
                #handle collision
