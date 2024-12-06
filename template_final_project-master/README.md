@@ -1,36 +1,24 @@
-
-:warning: Everything between << >> needs to be replaced (remove << >> after replacing)
-
-# Call of the Savannah  
+# Space Defenders  
 ## CS110 Final Project Fall, 2024 
 
 ## Team Members
 
 Elizabeth Morgan 
 
-***
 
 ## Project Description
 
-IDEA 1: I will simulate a videogame where a player will have to run from a predator and evade obstacles by jumping. (score will be factored)
+This project is a videogame made using pygame, in which the player controls a space ship and shoots lasers to destroy incoming asteroids. Everytime an asteroid is destroyed, a point will be added to the score. If the asteroid hits the ship, then it will switch to the game over screen with an option to try again.
 
-IDEA 2: I will simulate a videogame where a the player will be a bird trying to catch fish. (score will be Factored)
-***    
+
+  
 
 ## GUI Design
-IDEA 1: -The playable character will be an antelope (impala).
-^The user will be able to chose whether to play as a female or male impala. (thoughtful to user, what they prefer?)
-- The background will resemble a savannah
--The obstacles that the player msut avoid are rocks
--The "predator" that is trailing the player is a leopard
+The menu screen will contain the title, brief description of game, controls, and play button. The game screen contains a space background and the spaceship and asteroid both have drawn images to represent them. The game over screen has a space background with the score and try again button displayed.
 
-IDEA 2: -The playable character will be a bird (crane) or may just do a seagull?
-^ Fish will spawn in on the screen randomly (in the ocean)
-- The background will show some land, with the sky and ocean
--Score will be at top of screen
 ### Initial Design
 
-![initial gui](assets/gui.jpg)
+![initial gui](assets/initialgui.png)
 
 ### Final Design
 
@@ -38,46 +26,69 @@ IDEA 2: -The playable character will be a bird (crane) or may just do a seagull?
 
 ## Program Design
 
-### Features
-IDEA 1:
-1. start menu 
-2. moving obstacles 
-3. choice of user to play which character
-4. moveable character (jump + run) 
-5. score keeping track 
-6. easy/hard mode (speed of obstacles moving towards character)
 
-IDEA 2:
+### Features
 1. start menu
-2. fish spawning randomly
-3. easy/hard mode (# of fish spawn, and speed)
-4. moveable character?
-5. score keeping track
+2. game screen
+3. moveable character (space ship, moves left and right)
+4. obstacle collisions (laser and asteroid) 
+5. obstacle collisions (spaceship and asteroid)
+6. game over screen
+7. score keeping count
+
 
 ### Classes
 
-- << You should have a list of each of your classes with a description >>
-IDEA 1:
--player
--user will chose to play as a female or male impala
--Leopard  (I may discard the leopard.  I am not sure how I would have it chase the impala (because i imagine the impala would essentially be stationary and its just trying to jump over the rocks going towards it?) 
--Obstacles (rocks moving on the screen)
--Score (score will change as the game lasts longer)
--Ground (character is running on ground)
-IDEA 2:
--player
-^user will play as a moveable crane or seagull (still deciding)
--Fish 
-^fish will spawn in on screen randomly
--score
-^score will change as # of fish are caught and as game lasts longer
+Asteroid : Moves across screen, able to collide with laser and spaceship
+
+Laser: red rectangle widget that shoots out from spaceship
+
+Spaceship : Player controls this, starts in middle, can move left/right, shoot lasers
+
+
+
 
 
 
 ## ATP
+Test Case 1: Menu button functioning
+Test description: Verify that the button on menu screen works.
+Test steps: 
+1. Menu screen is displayed 
+2. User clicks on play button
+3. Verify that menu screen turns to game screen with the widgets
+Expected outcome: The menu screen will switch to game screen in response to the button click.
 
-| Step                 |Procedure             |Expected Results                   |
-|----------------------|:--------------------:|----------------------------------:|
-|  1                   | Run Counter Program  |GUI window appears with count = 0  |
-|  2                   | click count button   | display changes to count = 1      |
-etc...
+Test Case 2: Spaceship Movement
+Test description: verify that space ship moves left and right
+Test steps:
+1. Click play button
+2. Menu screen switches to game screen
+2. Press a or d keys
+3. Verify that spaceship will move left and right
+Expected outcome: The player's spaceship should move left and right in response to arrow key inputs
+
+Test Case 3: Asteroid movement
+Test description: Verify that the asteroid moves on game screen properly and resets when needed.
+1. Click play button
+2. Menu screen switches to game screen
+3. Asteroids randomly spawn on edge of screen
+4. Asteroids will move towards middle of screen and keep moving
+5. Asteroids will dissapear and reset if it collides with laser
+Expected outcome: Asteroid will move on screen correctly and reset if collision with laser occurs.
+
+Test case 4: Game over condition
+Test description: Verify that the menu screen switches to game over screen when certain conditions occur
+1. Click play button
+2. Menu screen switches to game screen
+3. If space ship collides with asteroid, then the game screen switches to game over screen
+4. "Game over" words are displayed, and final score is shown.
+Expected outcome: When asteroid collides with spaceship, menu screen will switch to game over screen
+
+Test case 5: Laser mechanic
+Test description: Verify that laser shoots out of spaceship and collides with asteroid
+1. Click play button
+2. Menu screen switches to game screen
+3. When f is clicked, a red rectangle representing the laser will shoot out from spaceship
+4. IF laser collides with asteroid, a point is added to score
+Expected outcome: Laser will shoot out from spaceship when f key is clicked
