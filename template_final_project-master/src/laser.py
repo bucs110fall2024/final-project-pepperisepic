@@ -1,8 +1,9 @@
 import pygame
+
 class Laser(pygame.sprite.Sprite):
     """
-    laser class for controlling laser projectiles fired from the spaceship.
-    
+    Laser class for controlling laser projectiles fired from the spaceship.
+   
     args:
         x (int): Starting X position of the laser.
         y (int): Starting Y position of the laser.
@@ -18,15 +19,13 @@ class Laser(pygame.sprite.Sprite):
 
     def update(self):
         """
-        moves the laser in the specified direction and removes it when it leaves the screen.
-        
-        return: None
+        Moves the laser in the specified direction and removes it when it leaves the screen.
         """
         if self.direction == "left":
             self.rect.x -= 10
         else:
             self.rect.x += 10
         
-        if self.rect.right < 0 or self.rect.left > 800:  # if it goes off screen
+        if self.rect.right < 0 or self.rect.left > pygame.display.get_surface().get_width():  # if it goes off screen
             self.kill()  # remove laser
             

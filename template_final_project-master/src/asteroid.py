@@ -20,8 +20,8 @@ class Asteroid(pygame.sprite.Sprite):
         return: none
         """
         self.rect.x -= 5  # move toward the left
-        if self.rect.right < 0:  # if it goes off screen
-            self.rect.left = 800  # reset position
+        if self.rect.right < 0:  
+            self.rect.left = 800  # if it goes off screen, reset position
 
 
 

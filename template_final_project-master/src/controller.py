@@ -1,39 +1,39 @@
+import random
+import json
 import pygame
 from spaceship import Spaceship
 from laser import Laser
 from asteroid import Asteroid
 from view import View
 
+
 class Controller:
     """
-    controller class responsible for managing game states, handling events,
+    Controller class responsible for managing game states, handling events,
     and controlling the game data (spaceship, asteroids, lasers, score).
     """
-    def __init__(self, view):
-        """
-        initializes the Controller with the provided view object.
-
-        args:
-            view (View): the View object responsible for displaying the game.
-        """
-        self.view = view
-        self.game_state = "menu" 
+    def __init__(self, screen):
+        self.view = View(screen)
+        self.game_state = "menu"
         self.score = 0
-        self.spaceship = Spaceship()  # create spaceship object
+        self.spaceship = Spaceship(400, 300)  # create spaceship object
         self.lasers = pygame.sprite.Group()  # group to hold lasers
         self.asteroids = pygame.sprite.Group()  # group to hold asteroids
         self.create_asteroids()  # initialize asteroids
-    
+        self.high_score = self.load_high_score()  # load the high score from the file
+
     def create_asteroids(self):
         """ Creates initial asteroids and adds them to the asteroid group. """
         for _ in range(3):  # create 3 asteroids initially
-            asteroid = Asteroid()
+            x = pygame.display.get_surface().get_width()  # edge of screen
+            y = random.randint(0, 600)
+            asteroid = Asteroid(x, y)
             self.asteroids.add(asteroid)
-    
+
     def mainloop(self):
         """
-        main loop for handling game events, updating models, and redrawing the screen.
-        this handles the game menu, game screen, and game over screen.
+        Main loop for handling game events, updating models, and redrawing the screen.
+        This handles the game menu, game screen, and game over screen.
         """
         running = True
         while running:
@@ -58,7 +58,7 @@ class Controller:
 
     def handle_menu_events(self):
         """
-        handles events during the menu screen (e.g., play button click).
+        Handles events during the menu screen (e.g., play button click).
         """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -70,7 +70,7 @@ class Controller:
 
     def handle_game_events(self):
         """
-        handles events during the game screen (e.g., player movement, shooting).
+        Handles events during the game screen (e.g., player movement, shooting).
         """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -101,7 +101,6 @@ class Controller:
         """
         Updates the positions and states of all game models (spaceship, lasers, asteroids).
         """
-        self.spaceship.update()
         for laser in self.lasers:
             laser.update()
         for asteroid in self.asteroids:
@@ -130,7 +129,7 @@ class Controller:
         elif self.game_state == "game":
             self.view.draw_game(self.spaceship, self.asteroids, self.lasers, self.score)
         elif self.game_state == "game_over":
-            self.view.draw_game_over(self.score)
+            self.view.draw_game_over(self.score, self.high_score)  # pass high_score to display it
 
     def start_game(self):
         """
@@ -156,15 +155,37 @@ class Controller:
         Transitions to the game over state.
         """
         self.game_state = "game_over"
+        self.check_high_score()  # check and save high score if needed
+
+    def check_high_score(self):
+        """
+        Checks if the current score is higher than the high score, and updates the high score if necessary.
+        """
+        if self.score > self.high_score:
+            self.high_score = self.score
+            self.save_high_score()  # save new high score to file
+
+    def save_high_score(self):
+        """
+        Saves the high score to a JSON file.
+        """
+        with open("highscores.json", "w") as file:
+            json.dump({"high_score": self.high_score}, file)
+
+    def load_high_score(self):
+        """
+        Loads the high score from a JSON file.
+        """
+        try:
+            with open("highscores.json", "r") as file:
+                data = json.load(file)
+                return data.get("high_score", 0)
+        except FileNotFoundError:
+            return 0  # default high score if file doesn't exist
 
     def is_play_button_clicked(self, pos):
         """
         Checks if the play button is clicked on the menu screen.
-
-        args:
-            pos (tuple): The mouse position (x, y).
-
-        return: bool: True if the play button was clicked, False otherwise.
         """
         play_button_rect = pygame.Rect(300, 200, 200, 50)  # define play button area
         return play_button_rect.collidepoint(pos)
@@ -172,11 +193,6 @@ class Controller:
     def is_try_again_button_clicked(self, pos):
         """
         Checks if the try again button is clicked on the game over screen.
-
-        args:
-        pos (tuple): The mouse position (x, y).
-
-        return: bool: True if the try again button was clicked, False otherwise.
         """
         try_again_button_rect = pygame.Rect(300, 300, 200, 50)  # define try again button area
         return try_again_button_rect.collidepoint(pos)
